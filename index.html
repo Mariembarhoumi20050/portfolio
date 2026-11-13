@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mariem Barhoumi — Business Intelligence & Développement</title>
+<meta name="description" content="Portfolio de Mariem Barhoumi, étudiante en Licence Business Intelligence à l'IHEC Carthage : entrepôt de données et cube OLAP, API Spring Boot, application mobile Flutter, machine learning en Python.">
+<meta name="robots" content="index,follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #faf7f4;
+  --surface: #ffffff;
+  --surface-2: #f3eeea;
+  --ink: #1d1819;
+  --ink-2: #5b5254;
+  --ink-3: #8b8083;
+  --line: #e6dfda;
+  --accent: #8a1c3c;
+  --accent-ink: #ffffff;
+  --accent-soft: #f6e6ea;
+  --ok: #2f6b4f;
+  --get: #2f6b4f; --post: #8a5a12; --patch: #5a3f96; --del: #a3322f;
+  --shadow: 0 1px 2px rgba(29,24,25,.04), 0 12px 32px -16px rgba(29,24,25,.18);
+  --serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --wrap: 1120px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141113; --surface: #1c181a; --surface-2: #241f22;
+    --ink: #f2ecee; --ink-2: #b9aeb2; --ink-3: #85797d; --line: #2f282b;
+    --accent: #ee93ab; --accent-ink: #2a0b15; --accent-soft: #33161f;
+    --ok: #7fc9a4;
+    --get: #7fc9a4; --post: #e2b565; --patch: #b9a2ee; --del: #ef9a96;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 16px 40px -20px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141113; --surface: #1c181a; --surface-2: #241f22;
+  --ink: #f2ecee; --ink-2: #b9aeb2; --ink-3: #85797d; --line: #2f282b;
+  --accent: #ee93ab; --accent-ink: #2a0b15; --accent-soft: #33161f;
+  --ok: #7fc9a4;
+  --get: #7fc9a4; --post: #e2b565; --patch: #b9a2ee; --del: #ef9a96;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 16px 40px -20px rgba(0,0,0,.7);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--sans); font-size: 16px; line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 500; line-height: 1.12; margin: 0; letter-spacing: -.015em; text-wrap: balance; }
+p { margin: 0; }
+.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
+.eyebrow {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent); font-weight: 500;
+}
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+/* ---------- Nav ---------- */
+.nav {
+  position: sticky; top: 0; z-index: 20;
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 16px; }
+.brand { font-family: var(--serif); font-size: 19px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+.brand span { color: var(--accent); }
+.nav-links { display: flex; align-items: center; gap: 4px; }
+.nav-links a {
+  text-decoration: none; font-size: 14px; color: var(--ink-2); padding: 8px 12px; border-radius: 8px;
+  transition: color .15s, background .15s;
+}
+.nav-links a:hover { color: var(--ink); background: var(--surface-2); }
+.theme-btn {
+  width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface);
+  color: var(--ink-2); cursor: pointer; display: grid; place-items: center; margin-left: 6px; flex: none;
+}
+.theme-btn:hover { color: var(--ink); }
+.theme-btn svg { width: 16px; height: 16px; }
+@media (max-width: 720px) {
+  .nav-links a:not(.keep) { display: none; }
+  .nav-links a { padding: 8px 8px; }
+  .nav .wrap { gap: 8px; }
+  .wrap { padding: 0 18px; }
+  .brand { font-size: 17px; }
+}
+
+/* ---------- Hero ---------- */
+.hero { padding: 88px 0 64px; }
+.hero-grid { display: grid; grid-template-columns: 1.35fr .9fr; gap: 56px; align-items: end; }
+.status {
+  display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500;
+  padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--ink-2);
+  margin-bottom: 28px;
+}
+.status i { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 4px color-mix(in srgb, var(--ok) 22%, transparent); }
+.hero h1 { font-size: clamp(40px, 6.4vw, 76px); font-weight: 400; }
+.hero h1 em { font-style: italic; color: var(--accent); }
+.lede { font-size: clamp(17px, 1.6vw, 20px); color: var(--ink-2); max-width: 56ch; margin-top: 24px; line-height: 1.6; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 500; font-size: 15px;
+  padding: 12px 20px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  transition: transform .15s, border-color .15s, background .15s;
+}
+.btn:hover { transform: translateY(-1px); border-color: var(--ink-3); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover { filter: brightness(1.06); }
+.btn svg { width: 16px; height: 16px; }
+
+.facts { border: 1px solid var(--line); border-radius: 16px; background: var(--surface); box-shadow: var(--shadow); overflow: hidden; }
+.facts div { display: flex; justify-content: space-between; gap: 16px; padding: 15px 20px; border-bottom: 1px solid var(--line); font-size: 14px; }
+.facts div:last-child { border-bottom: 0; }
+.facts dt { color: var(--ink-3); margin: 0; }
+.facts dd { margin: 0; font-weight: 500; text-align: right; }
+dl { margin: 0; }
+@media (max-width: 860px) { .hero { padding: 56px 0 40px; } .hero-grid { grid-template-columns: 1fr; gap: 36px; } }
+
+/* ---------- Sections ---------- */
+section { padding: 72px 0; }
+#contact { padding-bottom: 56px; }
+.sec-head { display: grid; grid-template-columns: 1fr 1.4fr; gap: 40px; align-items: end; margin-bottom: 44px; }
+.sec-head h2 { font-size: clamp(30px, 3.6vw, 44px); margin-top: 12px; }
+.sec-head p { color: var(--ink-2); max-width: 60ch; }
+@media (max-width: 860px) { section { padding: 52px 0; } .sec-head { grid-template-columns: 1fr; gap: 14px; margin-bottom: 32px; } }
+.rule { border: 0; border-top: 1px solid var(--line); margin: 0; }
+
+/* ---------- Skills ---------- */
+.skills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.skill { border: 1px solid var(--line); border-radius: 14px; padding: 24px; background: var(--surface); }
+.skill h3 { font-size: 21px; margin-bottom: 6px; }
+.skill > p { font-size: 14px; color: var(--ink-2); margin-bottom: 16px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 0; }
+.tags li {
+  font-family: var(--mono); font-size: 12px; padding: 4px 9px; border-radius: 6px;
+  background: var(--surface-2); color: var(--ink-2); white-space: nowrap;
+}
+@media (max-width: 860px) { .skills { grid-template-columns: 1fr; } }
+
+/* ---------- Projects ---------- */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+.filters button {
+  font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; padding: 8px 14px; border-radius: 999px;
+  border: 1px solid var(--line); background: transparent; color: var(--ink-2);
+}
+.filters button:hover { color: var(--ink); border-color: var(--ink-3); }
+.filters button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+.projects { display: grid; gap: 20px; }
+.project {
+  display: grid; grid-template-columns: 1.1fr 1fr; border: 1px solid var(--line); border-radius: 18px;
+  background: var(--surface); overflow: hidden; box-shadow: var(--shadow);
+}
+.project[hidden] { display: none; }
+.project:nth-child(even) .p-visual { order: -1; border-left: 0; border-right: 1px solid var(--line); }
+.p-body { padding: 36px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.p-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
+.p-meta .num { color: var(--accent); font-weight: 500; }
+.pill { padding: 3px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 500; }
+.pill.wip { background: var(--surface-2); color: var(--ink-2); }
+.project h3 { font-size: clamp(24px, 2.6vw, 31px); }
+.project .sum { color: var(--ink-2); }
+.points { margin: 0; padding: 0; list-style: none; display: grid; gap: 9px; font-size: 15px; }
+.points li { padding-left: 20px; position: relative; }
+.points li::before { content: ""; position: absolute; left: 0; top: .62em; width: 8px; height: 1.5px; background: var(--accent); }
+.p-foot { margin-top: auto; padding-top: 8px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; }
+.link { font-size: 14px; font-weight: 500; color: var(--accent); text-decoration: none; display: inline-flex; gap: 6px; align-items: center; white-space: nowrap; }
+.link:hover { text-decoration: underline; text-underline-offset: 4px; }
+.link svg { width: 14px; height: 14px; }
+.note { font-size: 13px; color: var(--ink-3); }
+
+.p-visual {
+  background: var(--surface-2); border-left: 1px solid var(--line); padding: 32px;
+  display: flex; flex-direction: column; justify-content: center; gap: 14px; min-width: 0;
+}
+.v-cap { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+@media (max-width: 860px) {
+  .project { grid-template-columns: 1fr; }
+  .project .p-visual, .project:nth-child(even) .p-visual { order: 0; border: 0; border-top: 1px solid var(--line); padding: 24px; }
+  .p-body { padding: 26px 24px; }
+}
+
+/* visual: API */
+.api { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow-x: auto; }
+.api div { display: flex; gap: 12px; padding: 9px 14px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 12.5px; white-space: nowrap; }
+.api div:last-child { border-bottom: 0; }
+.api b { font-weight: 500; width: 46px; flex: none; }
+.api .get { color: var(--get); } .api .post { color: var(--post); } .api .patch { color: var(--patch); } .api .del { color: var(--del); }
+.api span { color: var(--ink-2); }
+.roles { display: flex; flex-wrap: wrap; gap: 6px; }
+.roles span { font-size: 12px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--ink-2); }
+
+/* visual: svg diagrams */
+.diagram { width: 100%; height: auto; display: block; }
+.diagram .box { fill: var(--surface); stroke: var(--line); }
+.diagram .fact { fill: var(--accent); stroke: var(--accent); }
+.diagram .edge { stroke: var(--ink-3); stroke-width: 1.2; fill: none; }
+.diagram text { font-family: var(--mono); font-size: 12px; fill: var(--ink); text-anchor: middle; }
+.diagram .on-fact { fill: var(--accent-ink); font-weight: 500; }
+.diagram .sub { fill: var(--ink-3); font-size: 10.5px; }
+.diagram .leaf-ok { fill: color-mix(in srgb, var(--ok) 16%, var(--surface)); stroke: var(--ok); }
+.diagram .leaf-ko { fill: var(--accent-soft); stroke: var(--accent); }
+
+/* visual: phone */
+.phone-row { display: flex; gap: 20px; align-items: center; }
+.phone { width: 132px; flex: none; border: 1.5px solid var(--ink-3); border-radius: 22px; padding: 14px 10px 12px; background: var(--surface); }
+.phone::before { content: ""; display: block; width: 38px; height: 4px; border-radius: 4px; background: var(--line); margin: 0 auto 14px; }
+.mic { width: 46px; height: 46px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; margin: 4px auto 12px; box-shadow: 0 0 0 7px var(--accent-soft); }
+.mic svg { width: 20px; height: 20px; }
+.wave { display: flex; align-items: center; justify-content: center; gap: 3px; height: 26px; margin-bottom: 10px; }
+.wave i { width: 3px; border-radius: 3px; background: var(--accent); }
+.langs { display: flex; justify-content: center; gap: 4px; }
+.langs span { font-family: var(--mono); font-size: 10px; padding: 2px 6px; border-radius: 5px; background: var(--surface-2); color: var(--ink-2); }
+.screens { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; font-size: 13.5px; color: var(--ink-2); min-width: 0; }
+.screens li { display: flex; gap: 9px; align-items: baseline; }
+.screens li::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--ink-3); flex: none; transform: translateY(-2px); }
+
+/* visual: chips + pipeline */
+.chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.chips span { font-size: 13px; padding: 6px 12px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); color: var(--ink-2); }
+.pipe { display: grid; gap: 8px; }
+.pipe div { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 11px 14px; font-size: 14px; }
+.pipe b { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--accent); width: 22px; flex: none; }
+.pipe span { color: var(--ink-3); font-family: var(--mono); font-size: 12px; margin-left: auto; text-align: right; }
+
+/* ---------- Parcours ---------- */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+.cols h3 { font-size: 22px; margin-bottom: 18px; }
+.tl { list-style: none; margin: 0 0 40px; padding: 0; border-top: 1px solid var(--line); }
+.tl li { display: grid; grid-template-columns: 108px 1fr; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+.tl time { font-family: var(--mono); font-size: 12px; color: var(--ink-3); padding-top: 3px; }
+.tl strong { display: block; font-weight: 600; }
+.tl span { display: block; color: var(--accent); font-size: 14px; }
+.tl p { color: var(--ink-2); font-size: 14.5px; margin-top: 4px; }
+.plain { list-style: none; margin: 0 0 40px; padding: 0; border-top: 1px solid var(--line); }
+.plain li { padding: 13px 0; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; }
+.plain em { font-style: normal; color: var(--ink-3); font-size: 14px; text-align: right; }
+@media (max-width: 860px) { .cols { grid-template-columns: 1fr; gap: 8px; } .tl li { grid-template-columns: 1fr; gap: 4px; } }
+
+/* ---------- Contact ---------- */
+.contact { background: var(--ink); color: var(--bg); border-radius: 24px; padding: 64px 56px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center; }
+.contact .eyebrow { color: color-mix(in srgb, var(--bg) 62%, transparent); }
+.contact h2 { font-size: clamp(30px, 4vw, 48px); margin-top: 12px; }
+.contact p { color: color-mix(in srgb, var(--bg) 72%, transparent); margin-top: 16px; max-width: 46ch; }
+.c-links { display: grid; gap: 10px; }
+.c-links a {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; text-decoration: none;
+  padding: 16px 18px; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--bg) 22%, transparent);
+  transition: background .15s; min-width: 0;
+}
+.c-links a:hover { background: color-mix(in srgb, var(--bg) 10%, transparent); }
+.c-links small { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: color-mix(in srgb, var(--bg) 58%, transparent); }
+.c-links b { font-weight: 500; overflow-wrap: anywhere; }
+.c-links svg { width: 18px; height: 18px; flex: none; }
+@media (max-width: 860px) { .contact { grid-template-columns: 1fr; padding: 40px 24px; border-radius: 18px; } }
+
+footer { padding: 32px 0 48px; color: var(--ink-3); font-size: 13px; }
+footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+/* ---------- Finitions ---------- */
+::selection { background: var(--accent); color: var(--accent-ink); }
+body { position: relative; overflow-x: hidden; }
+body::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 760px; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(620px 420px at 86% 8%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
+    radial-gradient(520px 380px at 4% 42%, color-mix(in srgb, var(--post) 11%, transparent), transparent 70%);
+}
+.hello { font-family: var(--serif); font-style: italic; font-size: clamp(20px, 2.2vw, 26px); color: var(--ink-2); margin-bottom: 10px; }
+.hero h1 em {
+  background: linear-gradient(transparent 68%, color-mix(in srgb, var(--accent) 22%, transparent) 68%, color-mix(in srgb, var(--accent) 22%, transparent) 94%, transparent 94%);
+  padding: 0 .08em; border-radius: 2px; -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+.facts { border-radius: 20px; background: color-mix(in srgb, var(--surface) 82%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.facts div { transition: background .2s; }
+.facts div:hover { background: var(--accent-soft); }
+.btn { border-radius: 999px; padding: 13px 24px; }
+.btn.primary { box-shadow: 0 10px 24px -12px var(--accent); }
+.btn svg { transition: transform .2s; }
+.btn:hover svg { transform: translateX(3px); }
+
+.nav-links a { position: relative; }
+.nav-links a::after {
+  content: ""; position: absolute; left: 12px; right: 12px; bottom: 4px; height: 1.5px; background: var(--accent);
+  transform: scaleX(0); transform-origin: left; transition: transform .25s ease;
+}
+.nav-links a:hover { background: transparent; }
+.nav-links a:hover::after { transform: scaleX(1); }
+.theme-btn { transition: transform .3s ease, color .15s; }
+.theme-btn:hover { transform: rotate(-18deg); }
+
+.eyebrow { display: inline-flex; align-items: center; gap: 10px; }
+.eyebrow::before { content: ""; width: 22px; height: 1.5px; background: currentColor; }
+
+.skill { position: relative; border-radius: 18px; padding: 28px; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; overflow: hidden; }
+.skill::before { content: ""; position: absolute; left: 0; top: 0; width: 100%; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .35s ease; }
+.skill:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); }
+.skill:hover::before { transform: scaleX(1); }
+.skill h3 { font-size: 23px; }
+.tags li { border: 1px solid transparent; transition: border-color .15s, color .15s; }
+.tags li:hover { border-color: var(--accent); color: var(--accent); }
+
+.filters button { transition: background .2s, color .2s, border-color .2s; }
+.project { border-radius: 22px; transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease; }
+.project:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--accent) 30%, var(--line)); box-shadow: 0 2px 4px rgba(29,24,25,.04), 0 28px 48px -28px color-mix(in srgb, var(--accent) 45%, transparent); }
+.p-meta .num { font-family: var(--serif); font-size: 26px; font-style: italic; line-height: 1; margin-right: 2px; }
+.p-visual { background-image: radial-gradient(color-mix(in srgb, var(--ink-3) 26%, transparent) 1px, transparent 1px); background-size: 18px 18px; }
+.project .sum { font-size: 16.5px; }
+.note { border-left: 2px solid var(--line); padding-left: 12px; font-style: italic; }
+.wave i { animation: wave 1.3s ease-in-out infinite; transform-origin: center; }
+.wave i:nth-child(2n) { animation-delay: .18s; } .wave i:nth-child(3n) { animation-delay: .36s; }
+@keyframes wave { 0%, 100% { transform: scaleY(.45); } 50% { transform: scaleY(1); } }
+.chips span { transition: transform .15s, border-color .15s, color .15s; }
+.chips span:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--accent); }
+
+.tl li { transition: padding-left .2s ease; }
+.tl li:hover { padding-left: 8px; }
+.contact { position: relative; overflow: hidden; border-radius: 28px; }
+.contact::before { content: ""; position: absolute; width: 420px; height: 420px; right: -120px; top: -160px; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 55%, transparent), transparent); opacity: .55; pointer-events: none; }
+.contact > * { position: relative; }
+.c-links a { transition: background .15s, transform .15s; }
+.c-links a:hover { transform: translateX(4px); }
+@media (prefers-reduced-motion: reduce) { .wave i { animation: none; } .project:hover, .skill:hover { transform: none; } }
+
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">Mariem Barhoumi<span>.</span></a>
+    <nav class="nav-links" aria-label="Navigation principale">
+      <a href="#competences">Compétences</a>
+      <a href="#projets" class="keep">Projets</a>
+      <a href="#parcours">Parcours</a>
+      <a href="#contact" class="keep">Contact</a>
+      <button class="theme-btn" id="theme" type="button" aria-label="Basculer le thème clair ou sombre">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ================= HERO ================= -->
+<div class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="status"><i></i>Recherche un stage Data / BI Analyst</div>
+      <p class="hello">Bonjour, je suis Mariem.</p>
+      <h1>J'aime faire <em>parler les données</em>.</h1>
+      <p class="lede">Je suis en 3<sup>e</sup> année de Business Intelligence à l'IHEC Carthage. Ce qui me plaît, c'est de partir de données brutes et d'arriver à un tableau de bord qu'on comprend au premier coup d'œil. Et comme je suis curieuse, je code aussi ce qu'il y a derrière : une API, une appli mobile, un petit modèle en Python.</p>
+      <div class="cta">
+        <a class="btn primary" href="#projets">Voir les projets
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn" href="#contact">Me contacter</a>
+      </div>
+    </div>
+    <dl class="facts" aria-label="En bref">
+      <div><dt>Formation</dt><dd>Licence BI, 3<sup>e</sup> année</dd></div>
+      <div><dt>École</dt><dd>IHEC Carthage</dd></div>
+      <div><dt>Basée à</dt><dd>Mégrine, Ben Arous</dd></div>
+      <div><dt>Langues</dt><dd>Arabe · Français · Anglais</dd></div>    </dl>
+  </div>
+</div>
+
+<hr class="rule wrap">
+
+<!-- ================= COMPÉTENCES ================= -->
+<section id="competences">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><div class="eyebrow">01 — Compétences</div><h2>Ce que je sais faire</h2></div>
+      <p>Mon terrain, c'est la donnée. Mais j'ai vite compris qu'on analyse mieux ce qu'on sait construire, alors je développe aussi.</p>
+    </div>
+    <div class="skills">
+      <article class="skill reveal">
+        <h3>Data &amp; BI</h3>
+        <p>Mon cœur de métier : modéliser un entrepôt, monter un cube, construire un tableau de bord.</p>
+        <ul class="tags"><li>SQL</li><li>SQL Server</li><li>SSAS</li><li>Schéma en étoile</li><li>Power BI</li><li>MySQL</li></ul>
+      </article>
+      <article class="skill reveal">
+        <h3>Python pour la data</h3>
+        <p>Pour nettoyer un jeu de données, l'explorer et tester un premier modèle.</p>
+        <ul class="tags"><li>Pandas</li><li>NumPy</li><li>scikit-learn</li><li>Matplotlib</li><li>Jupyter</li><li>Tkinter</li></ul>
+      </article>
+      <article class="skill reveal">
+        <h3>Développement</h3>
+        <p>Du back-end au mobile, presque toujours en équipe et avec Git.</p>
+        <ul class="tags"><li>Java</li><li>Spring Boot</li><li>JPA / Hibernate</li><li>Flutter / Dart</li><li>PHP</li><li>HTML · CSS · JS</li><li>C</li><li>Git</li></ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<hr class="rule wrap">
+
+<!-- ================= PROJETS ================= -->
+<section id="projets">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><div class="eyebrow">02 — Projets</div><h2>Ce que j'ai construit</h2></div>
+      <p>Sept projets menés entre 2025 et 2026, en cours ou pour moi. Pour chacun, je raconte ce qu'il fait et comment je m'y suis prise.</p>
+    </div>
+
+    <div class="filters" role="group" aria-label="Filtrer les projets">
+      <button type="button" data-filter="all" aria-pressed="true">Tous</button>
+      <button type="button" data-filter="data" aria-pressed="false">Data &amp; BI</button>
+      <button type="button" data-filter="web" aria-pressed="false">Web</button>
+      <button type="button" data-filter="mobile" aria-pressed="false">Mobile</button>
+    </div>
+
+    <div class="projects">
+
+      <!-- 1. Distribexa -->
+      <article class="project reveal" data-cat="data">
+        <div class="p-body">
+          <div class="p-meta"><span class="num">01</span><span class="pill">Data &amp; BI</span><span>2026</span></div>
+          <h3>Distribexa — entrepôt de données et cube OLAP</h3>
+          <p class="sum">Comment suivre les ventes d'un distributeur sans se perdre dans les factures ? J'ai construit un entrepôt de données en étoile sous SQL Server, puis un cube SSAS pour croiser chiffre d'affaires, marge et coûts.</p>
+          <ul class="points">
+            <li>Au centre, la table de faits <strong>FactFacture</strong>. Autour, quatre dimensions (client, produit, site, temps) et une géographie partagée entre clients et sites.</li>
+            <li>Je suis huit mesures : chiffre d'affaires, marge, remise, prix catalogue, quantité, coûts directs (matière, main-d'œuvre) et coût indirect.</li>
+            <li>Au final, on répond vite à la question qui compte : quel produit, sur quel site, pour quel client, à quelle période ?</li>
+          </ul>
+          <div class="p-foot"><ul class="tags"><li>SQL Server</li><li>SSAS</li><li>Visual Studio (SSDT)</li><li>Schéma en étoile</li></ul></div>
+        </div>
+        <div class="p-visual">
+          <div class="v-cap">Modèle du cube</div>
+          <svg class="diagram" viewBox="0 0 400 250" role="img" aria-label="Schéma en étoile : FactFacture au centre, reliée à DimClient, DimProduit, DimSite et DimTemps ; DimGeographie reliée à DimClient et DimSite">
+            <path class="edge" d="M200 125 L76 46 M200 125 L324 46 M200 125 L76 204 M200 125 L324 204 M76 46 L76 204"/>
+            <rect class="box" x="16" y="28" width="120" height="36" rx="8"/><text x="76" y="51">DimClient</text>
+            <rect class="box" x="264" y="28" width="120" height="36" rx="8"/><text x="324" y="51">DimProduit</text>
+            <rect class="box" x="16" y="186" width="120" height="36" rx="8"/><text x="76" y="209">DimSite</text>
+            <rect class="box" x="264" y="186" width="120" height="36" rx="8"/><text x="324" y="209">DimTemps</text>
+            <rect class="box" x="10" y="109" width="132" height="32" rx="8"/><text x="76" y="130" class="sub" style="font-size:11.5px">DimGeographie</text>
+            <rect class="fact" x="148" y="100" width="124" height="50" rx="10"/><text x="210" y="122" class="on-fact">FactFacture</text><text x="210" y="139" class="on-fact" style="font-size:10px;font-weight:400;opacity:.85">8 mesures</text>
+          </svg>
+        </div>
+      </article>
+
+      <!-- 2. EventHub -->
+      <article class="project reveal" data-cat="web">
+        <div class="p-body">
+          <div class="p-meta"><span class="num">02</span><span class="pill">Web · Back-end</span><span>2026</span></div>
+          <h3>IHEC EventHub — gestion des clubs et événements</h3>
+          <p class="sum">Une plateforme pour la vie associative de mon école : les clubs publient leurs événements, les étudiants s'inscrivent, l'administration garde une vue d'ensemble. Je me suis occupée du back-end.</p>
+          <ul class="points">
+            <li>J'ai écrit une API REST de 29 endpoints, rangée en couches : contrôleurs, services, repositories, entités JPA.</li>
+            <li>Trois profils (administrateur, responsable de club, étudiant), que j'ai modélisés par héritage sur une seule table.</li>
+            <li>On ne peut pas s'inscrire à un événement complet ou annulé, et toute l'API se teste depuis Swagger UI.</li>
+            <li>Chaque profil a son tableau de bord en HTML et JavaScript, branché sur l'API.</li>
+          </ul>
+          <div class="p-foot"><ul class="tags"><li>Java 17</li><li>Spring Boot 3</li><li>Spring Data JPA</li><li>MySQL</li><li>OpenAPI</li></ul></div>
+        </div>
+        <div class="p-visual">
+          <div class="v-cap">Extrait de l'API</div>
+          <div class="api" role="img" aria-label="Exemples d'endpoints de l'API">
+            <div><b class="post">POST</b><span>/api/auth/login</span></div>
+            <div><b class="get">GET</b><span>/api/evenements/actifs</span></div>
+            <div><b class="post">POST</b><span>/api/evenements/{id}/inscrire/{etudiantId}</span></div>
+            <div><b class="patch">PATCH</b><span>/api/evenements/{id}/annuler</span></div>
+            <div><b class="post">POST</b><span>/api/clubs/{id}/rejoindre/{etudiantId}</span></div>
+            <div><b class="del">DEL</b><span>/api/clubs/{id}/quitter/{etudiantId}</span></div>
+          </div>
+          <div class="roles"><span>Administrateur</span><span>Responsable de club</span><span>Étudiant</span></div>
+        </div>
+      </article>
+
+      <!-- 3. Servicy -->
+      <article class="project reveal" data-cat="mobile">
+        <div class="p-body">
+          <div class="p-meta"><span class="num">03</span><span class="pill">Mobile</span><span>2026</span><span>Projet d'équipe</span></div>
+          <h3>Servicy — services à domicile, avec mode vocal</h3>
+          <p class="sum">Un projet d'équipe : une appli qui met en relation des particuliers et des prestataires de services à domicile. On choisit un service, on réserve, on discute avec le prestataire.</p>
+          <ul class="points">
+            <li><strong>Ma partie préférée, le mode vocal :</strong> on dit le service qu'on cherche, l'appli écoute, comprend et répond à voix haute.</li>
+            <li>J'ai aussi repensé l'accueil, l'onboarding, la sélection de service et les paramètres du compte.</li>
+            <li>L'appli existe en français, en anglais et en arabe, en thème clair ou sombre.</li>
+            <li>Le prestataire a son propre espace : demandes en attente, historique, revenus.</li>
+          </ul>
+          <div class="p-foot">
+            <ul class="tags"><li>Flutter</li><li>Dart</li><li>speech_to_text</li><li>flutter_tts</li><li>geolocator</li></ul>
+            <a class="link" href="https://github.com/Mariembarhoumi20050/appServicy" target="_blank" rel="noopener">Code sur GitHub
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a>
+          </div>
+          <p class="note">Nous sommes partis d'un gabarit d'interface open source, que nous avons fait grandir jusqu'à une quarantaine d'écrans et de modules.</p>
+        </div>
+        <div class="p-visual">
+          <div class="v-cap">Mode vocal et écrans</div>
+          <div class="phone-row">
+            <div class="phone" aria-hidden="true">
+              <div class="mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div>
+              <div class="wave"><i style="height:8px"></i><i style="height:16px"></i><i style="height:24px"></i><i style="height:12px"></i><i style="height:20px"></i><i style="height:10px"></i><i style="height:18px"></i><i style="height:6px"></i></div>
+              <div class="langs"><span>FR</span><span>EN</span><span>AR</span></div>
+            </div>
+            <ul class="screens">
+              <li>Onboarding et connexion</li>
+              <li>Sélection du service</li>
+              <li>Choix du prestataire</li>
+              <li>Date et heure</li>
+              <li>Messagerie</li>
+              <li>Espace prestataire</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- 4. Cardiaque -->
+      <article class="project reveal" data-cat="data">
+        <div class="p-body">
+          <div class="p-meta"><span class="num">04</span><span class="pill">Data · Machine learning</span><span>2025</span></div>
+          <h3>Système expert de prédiction de maladies cardiaques</h3>
+          <p class="sum">Peut-on estimer un risque cardiaque à partir de quelques indicateurs cliniques ? J'ai entraîné un arbre de décision sur le jeu de données UCI Heart Disease (Cleveland) et je l'ai habillé d'une petite application de bureau.</p>
+          <ul class="points">
+            <li>Je prépare les données avec Pandas et j'en garde 30 % de côté pour tester le modèle.</li>
+            <li>J'ai limité l'arbre à quatre niveaux : je préfère un modèle qu'on peut lire et expliquer.</li>
+            <li>Trois onglets : entraîner le modèle, saisir un patient pour obtenir une prédiction, visualiser l'arbre.</li>
+            <li>C'est un exercice d'apprentissage, pas un outil médical.</li>
+          </ul>
+          <div class="p-foot"><ul class="tags"><li>Python</li><li>scikit-learn</li><li>Pandas</li><li>Matplotlib</li><li>Tkinter</li></ul></div>
+        </div>
+        <div class="p-visual">
+          <div class="v-cap">Arbre de décision · profondeur 4</div>
+          <svg class="diagram" viewBox="0 0 400 220" role="img" aria-label="Arbre de décision aboutissant aux classes Sain et Malade">
+            <path class="edge" d="M200 40 L110 96 M200 40 L290 96 M110 122 L60 172 M110 122 L160 172 M290 122 L240 172 M290 122 L340 172"/>
+            <rect class="box" x="140" y="14" width="120" height="32" rx="8"/><text x="200" y="35">indicateur 1</text>
+            <rect class="box" x="56" y="94" width="108" height="30" rx="8"/><text x="110" y="114">indicateur 2</text>
+            <rect class="box" x="236" y="94" width="108" height="30" rx="8"/><text x="290" y="114">indicateur 3</text>
+            <rect class="leaf-ok" x="22" y="172" width="76" height="30" rx="15"/><text x="60" y="192">Sain</text>
+            <rect class="leaf-ko" x="122" y="172" width="76" height="30" rx="15"/><text x="160" y="192">Malade</text>
+            <rect class="leaf-ok" x="202" y="172" width="76" height="30" rx="15"/><text x="240" y="192">Sain</text>
+            <rect class="leaf-ko" x="302" y="172" width="76" height="30" rx="15"/><text x="340" y="192">Malade</text>
+          </svg>
+        </div>
+      </article>
+
+      <!-- 5. Carte -->
+      <article class="project reveal" data-cat="web">
+        <div class="p-body">
+          <div class="p-meta"><span class="num">05</span><span class="pill">Web · Front-end</span><span>2025 – 2026</span></div>
+          <h3>Carte interactive de la Tunisie</h3>
+          <p class="sum">Un site pour découvrir la Tunisie région par région : on clique sur un gouvernorat et sa fiche s'ouvre, avec sa population et ses repères.</p>
+          <ul class="points">
+            <li>Les zones cliquables restent calées sur la carte quand on redimensionne la fenêtre.</li>
+            <li>Une info-bulle accompagne le curseur, et tout reste utilisable au clavier.</li>
+            <li>Douze fiches écrites en HTML, CSS et JavaScript, sans framework. Les douze autres gouvernorats restent à faire.</li>
+          </ul>
+          <div class="p-foot">
+            <ul class="tags"><li>HTML</li><li>CSS</li><li>JavaScript</li><li>SVG</li></ul>
+            <a class="link" href="https://github.com/Mariembarhoumi20050/projet-map-" target="_blank" rel="noopener">Code sur GitHub
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a>
+          </div>
+        </div>
+        <div class="p-visual">
+          <div class="v-cap">Fiches disponibles</div>
+          <div class="chips">
+            <span>Tunis</span><span>Ariana</span><span>Ben Arous</span><span>Manouba</span><span>Bizerte</span><span>Nabeul</span><span>Sousse</span><span>Monastir</span><span>Mahdia</span><span>Kairouan</span><span>Le Kef</span><span>Sfax</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 6. E-commerce -->
+      <article class="project reveal" data-cat="web">
+        <div class="p-body">
+          <div class="p-meta"><span class="num">06</span><span class="pill">Web · Full-stack</span><span>2026</span></div>
+          <h3>Boutique en ligne — site e-commerce en PHP</h3>
+          <p class="sum">Une boutique en ligne écrite en PHP, sans framework : on s'inscrit, on parcourt le catalogue, on remplit son panier, et l'administrateur gère les produits et les comptes depuis son propre espace.</p>
+          <ul class="points">
+            <li>Deux espaces selon le rôle : le client arrive sur le catalogue, l'administrateur sur la gestion des produits et des utilisateurs (ajout, modification, suppression).</li>
+            <li>Le panier vit dans la session et le stock suit en temps réel : il baisse à l'ajout, remonte si on retire l'article, et un produit épuisé passe en « rupture de stock ».</li>
+            <li>Côté sécurité, les mots de passe sont hachés et toutes les requêtes SQL sont préparées avec PDO.</li>
+          </ul>
+          <div class="p-foot"><ul class="tags"><li>PHP</li><li>PDO</li><li>MySQL</li><li>Sessions</li><li>HTML · CSS</li><li>WampServer</li></ul></div>
+        </div>
+        <div class="p-visual">
+          <div class="v-cap">Parcours d'achat</div>
+          <div class="pipe">
+            <div><b>01</b>Connexion<span>client ou admin</span></div>
+            <div><b>02</b>Catalogue<span>table article</span></div>
+            <div><b>03</b>Panier<span>session PHP</span></div>
+            <div><b>04</b>Stock mis à jour<span>UPDATE préparé</span></div>
+          </div>
+          <div class="roles"><span>Espace client</span><span>Espace administrateur</span></div>
+        </div>
+      </article>
+
+      <!-- 7. Tourisme -->
+      <article class="project reveal" data-cat="data">
+        <div class="p-body">
+          <div class="p-meta"><span class="num">07</span><span class="pill">Data · Analyse</span><span>2025</span><span class="pill wip">En cours</span></div>
+          <h3>Analyse du tourisme en Tunisie</h3>
+          <p class="sum">Mon projet en chantier : explorer un jeu de données sur le tourisme tunisien dans des notebooks Jupyter.</p>
+          <ul class="points">
+            <li>Pour l'instant : le chargement et le nettoyage des données avec Pandas.</li>
+            <li>La suite : les visualisations, avec Seaborn et Plotly.</li>
+          </ul>
+          <div class="p-foot"><ul class="tags"><li>Python</li><li>Pandas</li><li>Jupyter</li><li>Seaborn</li><li>Plotly</li></ul></div>
+        </div>
+        <div class="p-visual">
+          <div class="v-cap">Démarche</div>
+          <div class="pipe">
+            <div><b>01</b>Données brutes<span>CSV</span></div>
+            <div><b>02</b>Nettoyage<span>Pandas</span></div>
+            <div><b>03</b>Exploration visuelle<span>Seaborn · Plotly</span></div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<hr class="rule wrap">
+
+<!-- ================= PARCOURS ================= -->
+<section id="parcours">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><div class="eyebrow">03 — Parcours</div><h2>D'où je viens</h2></div>
+      <p>Un bac sciences expérimentales, puis l'informatique décisionnelle à l'IHEC. À côté des cours, un premier stage et pas mal de vie associative.</p>
+    </div>
+    <div class="cols">
+      <div class="reveal">
+        <h3>Formation</h3>
+        <ul class="tl">
+          <li><time>2024 – auj.</time><div><strong>Licence nationale en Business Intelligence</strong><span>IHEC Carthage</span><p>3<sup>e</sup> année. Entrepôts de données, OLAP, bases de données, programmation.</p></div></li>
+          <li><time>2023 – 2024</time><div><strong>Baccalauréat Sciences expérimentales</strong><span>Lycée Taha Hussein, Mégrine</span></div></li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <h3>Expériences</h3>
+        <ul class="tl">
+          <li><time>2026 – auj.</time><div><strong>Membre active</strong><span>IHEC Finance Academy</span><p>Veille sectorielle, ateliers et événements autour de la finance et de la donnée.</p></div></li>
+          <li><time>2025</time><div><strong>Stagiaire</strong><span>Vitalis</span><p>Première immersion en entreprise : découverte des processus internes et contribution aux tâches opérationnelles.</p></div></li>
+          <li><time>2025</time><div><strong>Vie associative</strong><span>IHEC Carthage</span><p>Clubs étudiants et événements liés à l'entrepreneuriat.</p></div></li>
+        </ul>
+        <h3>Langues</h3>
+        <ul class="plain">
+          <li>Arabe <em>Langue maternelle</em></li>
+          <li>Français <em>Courant</em></li>
+          <li>Anglais <em>Courant</em></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact reveal">
+      <div>
+        <div class="eyebrow">04 — Contact</div>
+        <h2>On en discute&nbsp;?</h2>
+        <p>Je cherche un stage en Business Intelligence ou en analyse de données. Si mon profil vous parle, écrivez-moi : je réponds vite, et avec plaisir.</p>
+      </div>
+      <div class="c-links">
+        <a href="mailto:mariembarhoumi2005@gmail.com">
+          <div><small>E-mail</small><b>mariembarhoumi2005@gmail.com</b></div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+        </a>
+        <a href="https://github.com/Mariembarhoumi20050" target="_blank" rel="noopener">
+          <div><small>GitHub</small><b>Mariembarhoumi20050</b></div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+
+<script>
+(function () {
+  var root = document.documentElement;
+
+  // Thème clair / sombre
+  try { var saved = localStorage.getItem('theme'); if (saved) root.setAttribute('data-theme', saved); } catch (e) {}
+  document.getElementById('theme').addEventListener('click', function () {
+    var current = root.getAttribute('data-theme') ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    var next = current === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  });
+
+  // Filtre des projets
+  var buttons = document.querySelectorAll('.filters button');
+  var projects = document.querySelectorAll('.project');
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var f = b.getAttribute('data-filter');
+      buttons.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      projects.forEach(function (p) {
+        p.hidden = !(f === 'all' || p.getAttribute('data-cat') === f);
+        if (!p.hidden) p.classList.add('in');
+      });
+    });
+  });
+
+  // Apparition au défilement
+  var items = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    items.forEach(function (el) { io.observe(el); });
+  } else {
+    items.forEach(function (el) { el.classList.add('in'); });
+  }
+})();
+</script>
+</body>
+</html>
